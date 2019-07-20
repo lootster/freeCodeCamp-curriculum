@@ -1,4 +1,4 @@
-const dropElements = require("../15 - Drop it/Drop-it");
+const dropElements = require("./Drop-it");
 
 describe("Drop it", () => {
   it("should return [3, 4]", () => {

@@ -1,4 +1,4 @@
-const binaryAgent = require("../17 - Binary Agents/Binary-Agents");
+const binaryAgent = require("./Binary-Agents");
 
 describe("Binary-Agent", () => {
   it(`should return "Aren't bonfires fun!?"`, () => {

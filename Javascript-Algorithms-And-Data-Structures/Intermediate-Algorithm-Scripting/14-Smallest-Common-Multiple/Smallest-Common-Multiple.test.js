@@ -1,4 +1,4 @@
-const smallestCommons = require("../14 - Smallest Common Multiple/Smallest-Common-Multiple");
+const smallestCommons = require("./Smallest-Common-Multiple");
 
 describe("Smallest-Common-Multiple", () => {
   it("should should return a number.", () => {

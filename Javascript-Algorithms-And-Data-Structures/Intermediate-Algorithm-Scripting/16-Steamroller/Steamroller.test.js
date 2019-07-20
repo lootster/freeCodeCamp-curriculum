@@ -1,4 +1,4 @@
-const steamrollArray = require("../16 - Steamroller/Steamroller");
+const steamrollArray = require("./Steamroller");
 
 describe("steamrollArray", () => {
   it('should return ["a", "b"]', () => {

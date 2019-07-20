@@ -1,4 +1,4 @@
-const fearNotLetter = require("../09 - Missing letters/missing-letters");
+const fearNotLetter = require("./missing-letters");
 
 describe("missing-letters", () => {
   it("should should return 'd'", () => {
