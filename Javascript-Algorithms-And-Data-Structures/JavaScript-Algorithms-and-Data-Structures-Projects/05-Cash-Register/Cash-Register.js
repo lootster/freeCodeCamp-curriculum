@@ -46,7 +46,7 @@ function checkCashRegister(price, cash, cid) {
     }
   });
 
-  // Handle cases where cid is sufficient yet can't make up to exact change due (excess)
+  // Handle cases where cid is sufficient yet with no exact change due (excess)
   if (isThereLeftOverChange(change)) {
     return statusInsufficient(result);
   }
