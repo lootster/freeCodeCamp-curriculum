@@ -17,12 +17,12 @@ function checkCashRegister(price, cash, cid) {
   let totalCid = sumUpCid(cid);
 
   // Handle cases where cash-in-drawer is exact
-  if (isCashInDrawerAndChangeExact(totalCid, change)) {
+  if (isCashInDrawerEqualToChangeDue(totalCid, change)) {
     return statusClosed(result, cid);
   }
 
   // Handle cases where cash-in-drawer is insufficient
-  if (isCashInDrawerLessThanChange(totalCid, change)) {
+  if (isCashInDrawerLessThanChangeDue(totalCid, change)) {
     return statusInsufficient(result);
   }
 
@@ -39,19 +39,19 @@ function checkCashRegister(price, cash, cid) {
       cidObject[denomination.type] -= denomination.value;
       change = Math.round(change * 100) / 100;
     }
-    // Only include the denomination that was used 
+    // Include only denomination types, that was used as change, to the result 
     if (isDenominationTypeUsedForChange(amount)) {
       let arr = result.change;
       arr.push([denomination.type, amount]);
     }
   });
 
-  // Handle cases where cid is sufficient but with no exact change (excess)
+  // Handle cases where cid is sufficient yet can't make up to exact change due (excess)
   if (isThereLeftOverChange(change)) {
     return statusInsufficient(result);
   }
 
-  // Return back the change
+  // Return back the change due
   result.status = "OPEN";
   return result;
 }
@@ -67,11 +67,11 @@ function isThereLeftOverChange(change) {
   return change > 0;
 }
 
-function isCashInDrawerLessThanChange(totalCash, change) {
+function isCashInDrawerLessThanChangeDue(totalCash, change) {
   return totalCash < change;
 }
 
-function isCashInDrawerAndChangeExact(totalCash, change) {
+function isCashInDrawerEqualToChangeDue(totalCash, change) {
   return totalCash == change;
 }
 
