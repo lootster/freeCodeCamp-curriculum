@@ -1,4 +1,4 @@
-// Define an object of denomination types and it's value
+// Define an object according to denomination's type and value
 const DENOMINATIONS = [
   { type: "ONE HUNDRED", value: 100.0 },
   { type: "TWENTY", value: 20.0 },
@@ -13,24 +13,48 @@ const DENOMINATIONS = [
 
 function checkCashRegister(price, cash, cid) {
   let result = { status: null, change: [] };
-  let change = cash - price;
+  let totalChange = cash - price;
   let totalCid = sumUpCid(cid);
 
   // Handle cases where cash-in-drawer is exact
-  if (isCashInDrawerEqualToChangeDue(totalCid, change)) {
+  if (isCashInDrawerEqualToChangeDue(totalCid, totalChange)) {
     return statusClosed(result, cid);
   }
 
   // Handle cases where cash-in-drawer is insufficient
-  if (isCashInDrawerLessThanChangeDue(totalCid, change)) {
+  if (isCashInDrawerLessThanChangeDue(totalCid, totalChange)) {
     return statusInsufficient(result);
   }
 
-  // Start handling cases where cash-in-drawer is sufficient
+  // Handle cases where cash-in-drawer is sufficient
 
   // Convert cid array into an object
   let cidObject = convertCidArrayIntoObject(cid);
 
+  totalChange = getChangeInDifferentDenomination(totalChange, cidObject, result);
+
+  // Handle cases where cid is sufficient yet with no exact change due (excess)
+  if (isThereRemaining(totalChange)) {
+    return statusInsufficient(result);
+  }
+
+  // Return back the change due
+  return statusOpen(result);
+}
+
+module.exports = checkCashRegister;
+
+
+const STATUS_OPEN_MSG = "OPEN";
+const STATUS_INSUFFICIENT_MSG = "INSUFFICIENT_FUNDS";
+const STATUS_CLOSED_MSG = "CLOSED";
+
+function statusOpen(result) {
+  result.status = STATUS_OPEN_MSG;
+  return result;
+}
+
+function getChangeInDifferentDenomination(change, cidObject, result) {
   DENOMINATIONS.forEach(denomination => {
     let amount = 0;
     while (change >= denomination.value && cidObject[denomination.type] > 0) {
@@ -45,25 +69,14 @@ function checkCashRegister(price, cash, cid) {
       arr.push([denomination.type, amount]);
     }
   });
-
-  // Handle cases where cid is sufficient yet with no exact change due (excess)
-  if (isThereLeftOverChange(change)) {
-    return statusInsufficient(result);
-  }
-
-  // Return back the change due
-  result.status = "OPEN";
-  return result;
+  return change;
 }
-
-module.exports = checkCashRegister;
-
 
 function isDenominationTypeUsedForChange(amount) {
   return amount > 0;
 }
 
-function isThereLeftOverChange(change) {
+function isThereRemaining(change) {
   return change > 0;
 }
 
@@ -76,13 +89,13 @@ function isCashInDrawerEqualToChangeDue(totalCash, change) {
 }
 
 function statusInsufficient(result) {
-  result.status = "INSUFFICIENT_FUNDS";
+  result.status = STATUS_INSUFFICIENT_MSG;
   result.change = [];
   return result;
 }
 
 function statusClosed(result, cid) {
-  result.status = "CLOSED";
+  result.status = STATUS_CLOSED_MSG;
   result.change = cid;
   return result;
 }
