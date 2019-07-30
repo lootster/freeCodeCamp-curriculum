@@ -48,12 +48,12 @@ function getChangeInDifferentDenomination(changeDue, cashInDrawer, result) {
       cidObject[denomination.type] -= denomination.value;
       changeDue = Math.round(changeDue * 100) / 100;
     }
-    calculateChange(amount, result, denomination);
+    calculateChangeInOneDenomination(amount, result, denomination);
   });
   return changeDue;
 }
 
-function calculateChange(amount, result, denomination) {
+function calculateChangeInOneDenomination(amount, result, denomination) {
   // Include only denomination types that was used for change, to the result
   if (isDenominationTypeUsedForChange(amount)) {
     let arr = result.change;

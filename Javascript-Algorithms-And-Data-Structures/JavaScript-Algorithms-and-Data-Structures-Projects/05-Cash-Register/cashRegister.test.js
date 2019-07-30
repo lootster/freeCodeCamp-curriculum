@@ -2,8 +2,8 @@ const checkCashRegister = require("./cashRegister");
 const { MESSAGE } = require("./constants");
 
 describe("checkCashRegister", () => {
-  it("should return an object", () => {
-    let result = checkCashRegister(19.5, 20, [
+  it("should return an object with status open with the correct change array", () => {
+    let cashInDrawerArray = [
       ["PENNY", 1.01],
       ["NICKEL", 2.05],
       ["DIME", 3.1],
@@ -13,28 +13,20 @@ describe("checkCashRegister", () => {
       ["TEN", 20],
       ["TWENTY", 60],
       ["ONE_HUNDRED", 100]
-    ]);
-    expect(typeof result).toEqual("object");
-  });
-  it('should return {status: "OPEN", change: [["QUARTER", 0.5]]}', () => {
-    let result = checkCashRegister(19.5, 20, [
-      ["PENNY", 1.01],
-      ["NICKEL", 2.05],
-      ["DIME", 3.1],
-      ["QUARTER", 4.25],
-      ["ONE", 90],
-      ["FIVE", 55],
-      ["TEN", 20],
-      ["TWENTY", 60],
-      ["ONE_HUNDRED", 100]
-    ]);
-    expect(result).toEqual({
+    ];
+
+    let result = checkCashRegister(19.5, 20, cashInDrawerArray);
+
+    let displayedObject = {
       status: MESSAGE.STATUS_OPEN_MSG,
       change: [["QUARTER", 0.5]]
-    });
+    };
+
+    expect(typeof result).toEqual("object");
+    expect(result).toEqual(displayedObject);
   });
-  it('should return {status: "INSUFFICIENT_FUNDS", change: []}', () => {
-    let result = checkCashRegister(19.5, 20, [
+  it("should return an object with status insufficient funds and empty change array", () => {
+    let cashInDrawerArray = [
       ["PENNY", 0.01],
       ["NICKEL", 0],
       ["DIME", 0],
@@ -44,11 +36,16 @@ describe("checkCashRegister", () => {
       ["TEN", 0],
       ["TWENTY", 0],
       ["ONE_HUNDRED", 0]
-    ]);
-    expect(result).toEqual({
+    ];
+
+    let result = checkCashRegister(19.5, 20, cashInDrawerArray);
+
+    let displayedObject = {
       status: MESSAGE.STATUS_INSUFFICIENT_MSG,
       change: []
-    });
+    };
+    
+    expect(result).toEqual(displayedObject);
   });
   it('should return {status: "There is no exact change in register", change: []}', () => {
     let result = checkCashRegister(19.5, 20, [
