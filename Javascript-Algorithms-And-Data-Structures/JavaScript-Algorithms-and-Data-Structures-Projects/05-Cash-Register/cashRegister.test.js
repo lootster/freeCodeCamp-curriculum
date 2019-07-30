@@ -1,4 +1,5 @@
-const checkCashRegister = require("./Cash-Register");
+const checkCashRegister = require("./cashRegister");
+const { MESSAGE } = require("./constants");
 
 describe("checkCashRegister", () => {
   it("should return an object", () => {
@@ -28,7 +29,7 @@ describe("checkCashRegister", () => {
       ["ONE_HUNDRED", 100]
     ]);
     expect(result).toEqual({
-      status: "Cash register is open",
+      status: MESSAGE.STATUS_OPEN_MSG,
       change: [["QUARTER", 0.5]]
     });
   });
@@ -45,7 +46,7 @@ describe("checkCashRegister", () => {
       ["ONE_HUNDRED", 0]
     ]);
     expect(result).toEqual({
-      status: "Cash register has insufficient funds",
+      status: MESSAGE.STATUS_INSUFFICIENT_MSG,
       change: []
     });
   });
@@ -62,7 +63,7 @@ describe("checkCashRegister", () => {
       ["ONE_HUNDRED", 0]
     ]);
     expect(result).toEqual({
-      status: "There is no exact change in register",
+      status: MESSAGE.STATUS_NO_EXACT_CHANGE_MSG,
       change: []
     });
   });
@@ -79,7 +80,7 @@ describe("checkCashRegister", () => {
       ["ONE_HUNDRED", 0]
     ]);
     expect(result).toEqual({
-      status: "Cash register is closed",
+      status: MESSAGE.STATUS_CLOSED_MSG,
       change: [
         ["PENNY", 0.5],
         ["NICKEL", 0],
