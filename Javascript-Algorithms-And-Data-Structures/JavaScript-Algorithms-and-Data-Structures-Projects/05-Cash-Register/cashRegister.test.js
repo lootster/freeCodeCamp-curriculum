@@ -17,13 +17,13 @@ describe("checkCashRegister", () => {
 
     let result = checkCashRegister(19.5, 20, cashInDrawerArray);
 
-    let displayedObject = {
+    let resultObject = {
       status: MESSAGE.STATUS_OPEN_MSG,
       change: [["QUARTER", 0.5]]
     };
 
     expect(typeof result).toEqual("object");
-    expect(result).toEqual(displayedObject);
+    expect(result).toEqual(resultObject);
   });
   it("should return an object with status insufficient funds and empty change array", () => {
     let cashInDrawerArray = [
@@ -40,15 +40,15 @@ describe("checkCashRegister", () => {
 
     let result = checkCashRegister(19.5, 20, cashInDrawerArray);
 
-    let displayedObject = {
+    let resultObject = {
       status: MESSAGE.STATUS_INSUFFICIENT_MSG,
       change: []
     };
-    
-    expect(result).toEqual(displayedObject);
+
+    expect(result).toEqual(resultObject);
   });
   it('should return {status: "There is no exact change in register", change: []}', () => {
-    let result = checkCashRegister(19.5, 20, [
+    let cashInDrawerArray = [
       ["PENNY", 0.01],
       ["NICKEL", 0],
       ["DIME", 0],
@@ -58,14 +58,19 @@ describe("checkCashRegister", () => {
       ["TEN", 0],
       ["TWENTY", 0],
       ["ONE_HUNDRED", 0]
-    ]);
-    expect(result).toEqual({
+    ];
+
+    let result = checkCashRegister(19.5, 20, cashInDrawerArray);
+
+    let resultObject = {
       status: MESSAGE.STATUS_NO_EXACT_CHANGE_MSG,
       change: []
-    });
+    };
+
+    expect(result).toEqual(resultObject);
   });
   it('should return {status: "CLOSED", change: [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]}', () => {
-    let result = checkCashRegister(19.5, 20, [
+    let cashInDrawerArray = [
       ["PENNY", 0.5],
       ["NICKEL", 0],
       ["DIME", 0],
@@ -75,8 +80,10 @@ describe("checkCashRegister", () => {
       ["TEN", 0],
       ["TWENTY", 0],
       ["ONE_HUNDRED", 0]
-    ]);
-    expect(result).toEqual({
+    ];
+    let result = checkCashRegister(19.5, 20, cashInDrawerArray);
+
+    let resultObject = {
       status: MESSAGE.STATUS_CLOSED_MSG,
       change: [
         ["PENNY", 0.5],
@@ -89,6 +96,8 @@ describe("checkCashRegister", () => {
         ["TWENTY", 0],
         ["ONE_HUNDRED", 0]
       ]
-    });
+    };
+
+    expect(result).toEqual(resultObject);
   });
 });

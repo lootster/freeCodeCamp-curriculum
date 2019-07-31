@@ -27,7 +27,6 @@ function calculateChangeDueByDenomination(price, cash, cashInDrawerArray) {
 
 module.exports = calculateChangeDueByDenomination;
 
-
 function statusOpenReturnChangeDue(result) {
   result.status = MESSAGE.STATUS_OPEN_MSG;
   return result;
